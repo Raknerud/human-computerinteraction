@@ -14,5 +14,5 @@
 #   Test Package:              'Ctrl + Shift + T'
 
 setwd("C:/Users/Raknerud/Documents/GitHub/introtodatamining/dataminingproject/R")
-dataFile = "DG-AssocMiner_miner-disease-gene.tsv"
+dataFile = "murder_2016_final.txt"
 X=as.matrix(read.table(dataFile))

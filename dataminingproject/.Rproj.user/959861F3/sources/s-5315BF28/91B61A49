@@ -1,0 +1,24 @@
+{
+    "id": "91B61A49",
+    "path": "~/GitHub/introtodatamining/dataminingproject/R/murder_2015_final.txt",
+    "project_path": "R/murder_2015_final.txt",
+    "type": "text",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1606766919019.0,
+    "source_on_save": false,
+    "relative_order": 5,
+    "properties": {
+        "cursorPosition": "0,0",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1606767087,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1606767087,
+    "read_only": false,
+    "read_only_alternatives": []
+}
