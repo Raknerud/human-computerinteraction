@@ -41,7 +41,7 @@ fp = 0 #False Positive
 tn = 0 #True Negative
 fn = 0 #False Negative
 
-Xtest[1,1:d]
+
 for (i in 1:nn) {
 
   #For each point find the P(C+|Xi) and P(C-|Xi) and decide if the point belongs to C+ or C-..
