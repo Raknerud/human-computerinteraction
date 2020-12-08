@@ -18,14 +18,14 @@ Xpositive = Xtrain[idp,1:d]
 avgPositive=colMeans(Xpositive)
 sdp=apply(Xpositive,2,sd)
 
-idn = which(xTrain[,d+1] ==-1)
+idn = which(Xtrain[,d+1] ==-1)
 pn=length(idn)/n
-xNegative= xTrain[idn,1:d]
-avgNegative=colMeans(xNegative)
-sdn=apply(xNegative,2,sd)
+Xnegative= Xtrain[idn,1:d]
+avgNegative=colMeans(Xnegative)
+sdn=apply(Xnegative,2,sd)
 #Testing .....
-xTest=as.matrix(read.table(testingFile))
-nn = dim(xTest)[1] # Number of points in the testing data.
+Xtest=as.data.frame(read.table(dataFile))
+nn = dim(Xtest)[1] # Number of points in the testing data.
 
 
 tp = 0 #True Positive
@@ -41,25 +41,25 @@ for (i in 1:nn) {
   #P(Xi|C+) = P(Xi1|C+) * P(Xi2|C+)....P(Xid|C+)....Do the same for P(Xi|C-)
   #Now that you've calculate P(Xi|C+) and P(Xi|C-), we can decide which is higher
   #P(Xi|C-)*P(C-) or P(Xi|C-)*P(C-) ..
-  #increment TP,FP,FN,TN accordingly, remember the true lable for the ith point is in xTest[i,(d+1)]
-  pv=dnorm(xTest[i,1:d],avgPositive,sdp )
+  #increment TP,FP,FN,TN accordingly, remember the true lable for the ith point is in Xtest[i,(d+1)]
+  pv=dnorm(Xtest[i,1:d],avgPositive,sdp )
   PxPos=prod(pv)
   productPos=prod(PxPos,np)
-  nv=dnorm(xTest[i,1:d],avgNegative,sdn )
+  nv=dnorm(Xtest[i,1:d],avgNegative,sdn )
   PxNeg=prod(nv)
   productNeg=prod(PxNeg,pn)
   if(productPos>=productNeg){
     expectVal=1
   }else{expectVal=-1}
   if(expectVal==1){
-    if(xTest[i,d+1]==1){
+    if(Xtest[i,d+1]==1){
       tp=tp+1
     }else{
       fp=fp+1
     }
   }
   else{
-    if(xTest[i,d+1]==-1){
+    if(Xtest[i,d+1]==-1){
       tn=tn+1
     }else{
       fn=fn+1
