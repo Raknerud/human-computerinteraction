@@ -6,8 +6,16 @@
 setwd("C:/Users/dd-sa/OneDrive/Documents/GitHub/introtodatamining/dataminingproject/R")
 
 dataFile = "supermarket.txt"
+marketData=as.data.frame(read.table(dataFile))
+aData=subset(marketData,marketData[2]=="A")
+bData=subset(marketData,marketData[2]=="B")
+cData=subset(marketData,marketData[2]=="C")
 
-Xtrain = as.data.frame(read.table(dataFile))
+firstHalf=marketData[1:500,]
+secondHalf=marketData[501:1000,]
+
+
+Xtrain =firstHalf
 n = dim(Xtrain)[1]
 d = dim(Xtrain)[2] - 1 # the last attribute is the class label, so it does not count.
 #Training... Collect mean and standard deviation for each dimension for each class..
@@ -24,7 +32,7 @@ Xnegative= Xtrain[idn,1:d]
 avgNegative=colMeans(Xnegative)
 sdn=apply(Xnegative,2,sd)
 #Testing .....
-Xtest=as.data.frame(read.table(dataFile))
+Xtest=secondHalf
 nn = dim(Xtest)[1] # Number of points in the testing data.
 
 
@@ -33,7 +41,7 @@ fp = 0 #False Positive
 tn = 0 #True Negative
 fn = 0 #False Negative
 
-
+Xtest[1,1:d]
 for (i in 1:nn) {
 
   #For each point find the P(C+|Xi) and P(C-|Xi) and decide if the point belongs to C+ or C-..
