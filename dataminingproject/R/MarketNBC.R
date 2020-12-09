@@ -36,6 +36,7 @@ pn=length(idn)/n
 Xnegative= Xtrain[idn,1:d]
 avgNegative=colMeans(Xnegative[d])
 sdn=apply(Xnegative,2,sd)
+
 #Testing .....
 Xtest=secondHalf
 nn = dim(Xtest)[1] # Number of points in the testing data.
@@ -55,25 +56,25 @@ for (i in 1:nn) {
   #Now that you've calculate P(Xi|C+) and P(Xi|C-), we can decide which is higher
   #P(Xi|C-)*P(C-) or P(Xi|C-)*P(C-) ..
   #increment TP,FP,FN,TN accordingly, remember the true lable for the ith point is in Xtest[i,(d+1)]
-  pv=dnorm(Xtest[i,d],avgPositive,sdp )
+  pv=dnorm(Xtest[i,d],avgPositive,sdp[d] )
 
   PxPos=prod(pv)
   productPos=prod(PxPos,np)
-  nv=dnorm(Xtest[i,d],avgNegative,sdn )
+  nv=dnorm(Xtest[i,d],avgNegative,sdn[d] )
   PxNeg=prod(nv)
   productNeg=prod(PxNeg,pn)
   if(productPos >= productNeg){
     expectVal=1
   }else{expectVal=-1}
   if(expectVal==1){
-    if(Xtest[i,d+1]==1){
+    if(Xtest[i,5]=="Male"){
       tp=tp+1
     }else{
       fp=fp+1
     }
   }
   else{
-    if(Xtest[i,d+1]==-1){
+    if(Xtest[i,5]=="Female"){
       tn=tn+1
     }else{
       fn=fn+1
@@ -91,5 +92,5 @@ colnames(testData)<-c("Accuracy", "TP","TN","FP", "FN", "Precision", "Recall")
 testData <- as.table(testData)
 testData
 
-write.table(testData, file = "testData.txt", sep = "\t",
+write.table(testData, file = "testRatingsData.txt", sep = "\t",
             row.names = TRUE, col.names = NA)
