@@ -17,19 +17,24 @@ secondHalf=marketData[501:1000,]
 
 Xtrain =firstHalf
 n = dim(Xtrain)[1]
-d = dim(Xtrain)[2] - 1 # the last attribute is the class label, so it does not count.
+d = dim(Xtrain)[2]
+# the last attribute is the class label, so it does not count.
 #Training... Collect mean and standard deviation for each dimension for each class..
 #Also, calculate P(C+) and P(C-)
-idp = which(Xtrain[,d+1] ==1) # points that have 1 as the class label
+idp = which(Xtrain[,5] =="Male") # points that have 1 as the class label
 np = length(idp)
+
 Xpositive = Xtrain[idp,1:d]
-avgPositive=colMeans(Xpositive)
+
+
+avgPositive=colMeans(Xpositive[d])
+
 sdp=apply(Xpositive,2,sd)
 
-idn = which(Xtrain[,d+1] ==-1)
+idn = which(Xtrain[,5] =="Female")
 pn=length(idn)/n
 Xnegative= Xtrain[idn,1:d]
-avgNegative=colMeans(Xnegative)
+avgNegative=colMeans(Xnegative[d])
 sdn=apply(Xnegative,2,sd)
 #Testing .....
 Xtest=secondHalf
@@ -50,13 +55,14 @@ for (i in 1:nn) {
   #Now that you've calculate P(Xi|C+) and P(Xi|C-), we can decide which is higher
   #P(Xi|C-)*P(C-) or P(Xi|C-)*P(C-) ..
   #increment TP,FP,FN,TN accordingly, remember the true lable for the ith point is in Xtest[i,(d+1)]
-  pv=dnorm(Xtest[i,1:d],avgPositive,sdp )
+  pv=dnorm(Xtest[i,d],avgPositive,sdp )
+
   PxPos=prod(pv)
   productPos=prod(PxPos,np)
-  nv=dnorm(Xtest[i,1:d],avgNegative,sdn )
+  nv=dnorm(Xtest[i,d],avgNegative,sdn )
   PxNeg=prod(nv)
   productNeg=prod(PxNeg,pn)
-  if(productPos>=productNeg){
+  if(productPos >= productNeg){
     expectVal=1
   }else{expectVal=-1}
   if(expectVal==1){
