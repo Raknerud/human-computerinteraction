@@ -7,9 +7,6 @@ setwd("C:/Users/dd-sa/OneDrive/Documents/GitHub/introtodatamining/dataminingproj
 
 dataFile = "supermarket.txt"
 marketData=as.data.frame.matrix(read.table(dataFile))
-aData=subset(marketData,marketData[2]=="A")
-bData=subset(marketData,marketData[2]=="B")
-cData=subset(marketData,marketData[2]=="C")
 
 firstHalf=marketData[1:500,c(5,14,16,17)]
 secondHalf=marketData[501:1000,c(5,14,16,17)]
