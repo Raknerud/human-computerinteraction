@@ -1,11 +1,9 @@
 setwd("C:/Users/Raknerud/Documents/GitHub/introtodatamining/dataminingproject/R")
 dataFile = "supermarket.txt"
 X=as.data.frame(read.table(dataFile))
-Xtrain=X[1:500,c(2,7,8,9,10)]
-Xtrain[,2:5]=lapply(Xtrain[,2:5], function(x) as.numeric(as.character(x)))
-print(Xtrain[2,2]-Xtrain[2,3])
+Xtrain=X[1:500,c(5,7,9)]
 n=dim(Xtrain)[1]
-Xtest=X[501:1000, c(2,7,8,9,10)]
+Xtest=X[501:1000, c(5,7,9)]
 nn=dim(Xtest)[1]
 k=7
 euclDistance <- function(x,y) {
@@ -20,8 +18,8 @@ falseB=0
 falseC=0
 for(element in 1:nn){
   print(element)
-  point=(Xtest[element,2:5])
-  PointDistances = apply(Xtrain[,2:5], 1, function(x) euclDistance(point,x))
+  point=(Xtest[element,2:3])
+  PointDistances = apply(Xtrain[,2:3], 1, function(x) euclDistance(point,x))
   neighbors = sort(PointDistances,index.return=TRUE)$ix
   kneighbors = neighbors[1:k]
   totalA=0
@@ -70,4 +68,109 @@ for(element in 1:nn){
 }
 accuracy=(trueA+trueB+trueC)/(trueA+trueB+trueC+falseA+falseB+falseC)
 print(accuracy)
+
+
+Xtrain=X[1:500,c(5,10, 16)]
+n=dim(Xtrain)[1]
+Xtest=X[501:1000, c(5,10,16)]
+nn=dim(Xtest)[1]
+k=3
+tM=0
+tF=0
+fM=0
+fF=0
+for(element in 1:nn){
+  print(element)
+  point=(Xtest[element,2:3])
+  PointDistances = apply(Xtrain[,2:3], 1, function(x) euclDistance(point,x))
+  neighbors = sort(PointDistances,index.return=TRUE)$ix
+  kneighbors = neighbors[1:k]
+  totalM=0
+  totalF=0
+  for(w in 1:k){
+    index=kneighbors[w]
+    if(Xtrain[index,1]=='Male'){
+      totalM=totalM+1
+    }
+    else{
+      totalF=totalF+1
+    }
+
+  }
+  if(totalM>=totalF){
+    labelGuess='Male'
+    if(Xtest[element,1]==labelGuess){
+      tM=tM+1
+    }
+    else{
+      fM=fM+1
+    }
+  }
+  else{
+    labelGuess='Female'
+    if(Xtest[element,1]==labelGuess){
+      tF=tF+1
+    }
+    else{
+      fF=fF+1
+    }
+  }
+
+}
+accuracy=(tM+tF)/(tM+tF+fM+fF)
+print(accuracy)
+
+
+
+Xtrain=X[1:500,c(4,8,17)]
+n=dim(Xtrain)[1]
+Xtest=X[501:1000, c(4,8,17)]
+nn=dim(Xtest)[1]
+k=25
+tM=0
+tN=0
+fM=0
+fN=0
+for(element in 1:nn){
+  point=(Xtest[element,2:3])
+  PointDistances = apply(Xtrain[,2:3], 1, function(x) euclDistance(point,x))
+  neighbors = sort(PointDistances,index.return=TRUE)$ix
+  kneighbors = neighbors[1:k]
+  totalM=0
+  totalN=0
+  for(w in 1:k){
+    index=kneighbors[w]
+    if(Xtrain[index,1]=='Member'){
+      totalM=totalM+1
+    }
+    else{
+      totalN=totalN+1
+    }
+
+  }
+  if(totalM>=totalN){
+    labelGuess='Member'
+    if(Xtest[element,1]==labelGuess){
+      tM=tM+1
+    }
+    else{
+      fM=fM+1
+    }
+  }
+  else{
+    labelGuess='Normal'
+    if(Xtest[element,1]==labelGuess){
+      tN=tN+1
+    }
+    else{
+      fN=fN+1
+    }
+  }
+
+}
+
+accuracy=(tM+tN)/(tM+tN+fM+fN)
+print(accuracy)
+
+
 
