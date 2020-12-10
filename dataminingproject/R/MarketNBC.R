@@ -21,7 +21,7 @@ n = dim(Xtrain)[1]#Rows
 d = dim(Xtrain)[2]#Columns
 
 idp = which(Xtrain[ ,1] =="Male") #Points that are male in the first position
-np = length(idp)
+np = length(idp)/n
 Xpositive = Xtrain[idp,2:d]
 avgPositive=colMeans(Xpositive)
 
@@ -37,6 +37,7 @@ sdn=apply(Xnegative,2,sd)
 #Test
 Xtest=secondHalf
 nn = dim(Xtest)[1] # Number of points in the testing data.
+
 
 
 tp = 0 #True Positive
@@ -57,17 +58,17 @@ for (i in 1:nn) {
   if(productPos >= productNeg){
     expectVal=1
   }else{expectVal=-1}
-  if(Xtest[i,1]=="Male"){
-    if(expectVal==1){
+  if(expectVal==1){
+    if(Xtest[i,1]=="Male"){
       tp=tp+1
     }else{
-      fp=fp+1
+      tn=tn+1
     }
   }
   else{
-    if(Xtest[i,1]=="Female"){
-      if(expectVal==1){
-        tn=tn+1
+    if(expectVal==-1){
+      if(Xtest[i,1]=="Female"){
+        fp=fp+1
       }else{
         fn=fn+1
       }
