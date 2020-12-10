@@ -24,11 +24,9 @@ idp = which(Xtrain[ ,1] =="Male") #Points that are male in the first position
 np = length(idp)/n
 Xpositive = Xtrain[idp,2:d]
 avgPositive=colMeans(Xpositive)
-
 sdp=apply(Xpositive,2,sd)
 
 idn = which(Xtrain[,1] =="Female")
-
 pn=length(idn)/n
 Xnegative= Xtrain[idn,2:d]
 avgNegative=colMeans(Xnegative)
@@ -55,25 +53,27 @@ for (i in 1:nn) {
   PxNeg=prod(nv)
   productNeg=prod(PxNeg,pn)
 
-  if(productPos >= productNeg){
+  if(productPos > productNeg){
     expectVal=1
-  }else{expectVal=-1}
+  }
+  if(productNeg >= productPos){
+    expectVal=-1
+    }
   if(expectVal==1){
     if(Xtest[i,1]=="Male"){
       tp=tp+1
     }else{
+      fp=fp+1
+    }
+  }
+  if(expectVal==-1){
+    if(Xtest[i,1]=="Female"){
       tn=tn+1
+    }else{
+      fn=fn+1
     }
   }
-  else{
-    if(expectVal==-1){
-      if(Xtest[i,1]=="Female"){
-        fp=fp+1
-      }else{
-        fn=fn+1
-      }
-    }
-  }
+
 
 }
 
