@@ -1,4 +1,6 @@
-setwd("C:/Users/Raknerud/Documents/GitHub/introtodatamining/dataminingproject/R")
+#setwd("C:/Users/Raknerud/Documents/GitHub/introtodatamining/dataminingproject/R")
+setwd("C:/Users/dd-sa/OneDrive/Documents/GitHub/introtodatamining/dataminingproject/R")
+
 dataFile = "supermarket.txt"
 X=as.data.frame(read.table(dataFile))
 Xtrain=X[1:500,c(5,7,9)]
