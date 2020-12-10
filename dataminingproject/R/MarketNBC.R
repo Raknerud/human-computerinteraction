@@ -11,34 +11,37 @@ aData=subset(marketData,marketData[2]=="A")
 bData=subset(marketData,marketData[2]=="B")
 cData=subset(marketData,marketData[2]=="C")
 
-firstHalf=marketData[1:500,]
-secondHalf=marketData[501:1000,]
+firstHalf=marketData[1:500,c(5,14,16,17)]
+secondHalf=marketData[501:1000,c(5,14,16,17)]
 
 
 Xtrain =firstHalf
+Xtrain[,2:4]=lapply(Xtrain[,2:4], function(x) as.numeric(as.character(x)))
 n = dim(Xtrain)[1]
 d = dim(Xtrain)[2]
 # the last attribute is the class label, so it does not count.
 #Training... Collect mean and standard deviation for each dimension for each class..
 #Also, calculate P(C+) and P(C-)
-idp = which(Xtrain[,5] =="Male") # points that have 1 as the class label
+
+
+
+idp = which(Xtrain[,1] =="Male") # points that have 1 as the class label
 np = length(idp)
-
-Xpositive = Xtrain[idp,1:d]
-
-
-avgPositive=colMeans(Xpositive[d])
+Xpositive = Xtrain[idp,2:d]
+avgPositive=colMeans(Xpositive)
 
 sdp=apply(Xpositive,2,sd)
 
-idn = which(Xtrain[,5] =="Female")
+idn = which(Xtrain[,1] =="Female")
+
 pn=length(idn)/n
-Xnegative= Xtrain[idn,1:d]
-avgNegative=colMeans(Xnegative[d])
+Xnegative= Xtrain[idn,2:d]
+avgNegative=colMeans(Xnegative)
 sdn=apply(Xnegative,2,sd)
 
 #Testing .....
 Xtest=secondHalf
+Xtest[,2:4]=lapply(Xtest[,2:4], function(x) as.numeric(as.character(x)))
 nn = dim(Xtest)[1] # Number of points in the testing data.
 
 
@@ -56,25 +59,27 @@ for (i in 1:nn) {
   #Now that you've calculate P(Xi|C+) and P(Xi|C-), we can decide which is higher
   #P(Xi|C-)*P(C-) or P(Xi|C-)*P(C-) ..
   #increment TP,FP,FN,TN accordingly, remember the true lable for the ith point is in Xtest[i,(d+1)]
-  pv=dnorm(Xtest[i,d],avgPositive,sdp[d] )
+
+  pv=dnorm(Xtest[i,d],avgPositive,sdp )
 
   PxPos=prod(pv)
   productPos=prod(PxPos,np)
-  nv=dnorm(Xtest[i,d],avgNegative,sdn[d] )
+  nv=dnorm(Xtest[i,d],avgNegative,sdn )
   PxNeg=prod(nv)
   productNeg=prod(PxNeg,pn)
+
   if(productPos >= productNeg){
     expectVal=1
   }else{expectVal=-1}
-  if(expectVal==1){
-    if(Xtest[i,5]=="Male"){
+  if(Xtest[i,1]=="Male"){
+    if(expectVal==1){
       tp=tp+1
     }else{
       fp=fp+1
     }
   }
   else{
-    if(Xtest[i,5]=="Female"){
+    if(Xtest[i,1]=="Female"){
       tn=tn+1
     }else{
       fn=fn+1
