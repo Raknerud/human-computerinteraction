@@ -6,7 +6,7 @@
 setwd("C:/Users/dd-sa/OneDrive/Documents/GitHub/introtodatamining/dataminingproject/R")
 
 dataFile = "supermarket.txt"
-marketData=as.data.frame(read.table(dataFile))
+marketData=as.data.frame.matrix(read.table(dataFile))
 aData=subset(marketData,marketData[2]=="A")
 bData=subset(marketData,marketData[2]=="B")
 cData=subset(marketData,marketData[2]=="C")
@@ -16,16 +16,11 @@ secondHalf=marketData[501:1000,c(5,14,16,17)]
 
 
 Xtrain =firstHalf
-Xtrain[,2:4]=lapply(Xtrain[,2:4], function(x) as.numeric(as.character(x)))
-n = dim(Xtrain)[1]
-d = dim(Xtrain)[2]
-# the last attribute is the class label, so it does not count.
-#Training... Collect mean and standard deviation for each dimension for each class..
-#Also, calculate P(C+) and P(C-)
 
+n = dim(Xtrain)[1]#Rows
+d = dim(Xtrain)[2]#Columns
 
-
-idp = which(Xtrain[,1] =="Male") # points that have 1 as the class label
+idp = which(Xtrain[ ,1] =="Male") #Points that are male in the first position
 np = length(idp)
 Xpositive = Xtrain[idp,2:d]
 avgPositive=colMeans(Xpositive)
@@ -39,9 +34,8 @@ Xnegative= Xtrain[idn,2:d]
 avgNegative=colMeans(Xnegative)
 sdn=apply(Xnegative,2,sd)
 
-#Testing .....
+#Test
 Xtest=secondHalf
-Xtest[,2:4]=lapply(Xtest[,2:4], function(x) as.numeric(as.character(x)))
 nn = dim(Xtest)[1] # Number of points in the testing data.
 
 
@@ -53,18 +47,10 @@ fn = 0 #False Negative
 
 for (i in 1:nn) {
 
-  #For each point find the P(C+|Xi) and P(C-|Xi) and decide if the point belongs to C+ or C-..
-  #Recall we need to calculate P(Xi|C+)*P(C+) ..
-  #P(Xi|C+) = P(Xi1|C+) * P(Xi2|C+)....P(Xid|C+)....Do the same for P(Xi|C-)
-  #Now that you've calculate P(Xi|C+) and P(Xi|C-), we can decide which is higher
-  #P(Xi|C-)*P(C-) or P(Xi|C-)*P(C-) ..
-  #increment TP,FP,FN,TN accordingly, remember the true lable for the ith point is in Xtest[i,(d+1)]
-
-  pv=dnorm(Xtest[i,d],avgPositive,sdp )
-
+  pv=dnorm(c(Xtest[i,2],Xtest[i,3],Xtest[i,4]),avgPositive,sdp )
   PxPos=prod(pv)
   productPos=prod(PxPos,np)
-  nv=dnorm(Xtest[i,d],avgNegative,sdn )
+  nv=dnorm(c(Xtest[i,2],Xtest[i,3],Xtest[i,4]),avgNegative,sdn )
   PxNeg=prod(nv)
   productNeg=prod(PxNeg,pn)
 
@@ -80,11 +66,14 @@ for (i in 1:nn) {
   }
   else{
     if(Xtest[i,1]=="Female"){
-      tn=tn+1
-    }else{
-      fn=fn+1
+      if(expectVal==1){
+        tn=tn+1
+      }else{
+        fn=fn+1
+      }
     }
   }
+
 }
 
 
