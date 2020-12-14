@@ -1,11 +1,14 @@
 #setwd("C:/Users/Raknerud/Documents/GitHub/introtodatamining/dataminingproject/R")
+#set the directory and read from file to X.
 setwd("C:/Users/dd-sa/OneDrive/Documents/GitHub/introtodatamining/dataminingproject/R")
-
 dataFile = "supermarket.txt"
 X=as.data.frame(read.table(dataFile))
-Xtrain=X[1:500,c(5,7,9)]
+
+
+#Branch Classifier: Branch in Column 2, columns other than 7, or 9 can be used if they contain numeric data.
+Xtrain=X[1:500,c(2,7,9)]
 n=dim(Xtrain)[1]
-Xtest=X[501:1000, c(5,7,9)]
+Xtest=X[501:1000, c(2,7,9)]
 nn=dim(Xtest)[1]
 k=7
 euclDistance <- function(x,y) {
@@ -19,7 +22,6 @@ falseA=0
 falseB=0
 falseC=0
 for(element in 1:nn){
-  print(element)
   point=(Xtest[element,2:3])
   PointDistances = apply(Xtrain[,2:3], 1, function(x) euclDistance(point,x))
   neighbors = sort(PointDistances,index.return=TRUE)$ix
@@ -72,6 +74,7 @@ accuracy=(trueA+trueB+trueC)/(trueA+trueB+trueC+falseA+falseB+falseC)
 print(accuracy)
 
 
+##Gender Classifier: Gender in column 5, other columns can be changed to work with different numerics.
 Xtrain=X[1:500,c(5,10, 16)]
 n=dim(Xtrain)[1]
 Xtest=X[501:1000, c(5,10,16)]
@@ -123,7 +126,7 @@ accuracy=(tM+tF)/(tM+tF+fM+fF)
 print(accuracy)
 
 
-
+##Membership Classifier: Membership in column 4, other columns can be changed to work with different numerics.
 Xtrain=X[1:500,c(4,8,17)]
 n=dim(Xtrain)[1]
 Xtest=X[501:1000, c(4,8,17)]
