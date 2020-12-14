@@ -75,7 +75,7 @@ print(accuracy)
 
 
 ##Gender Classifier: Gender in column 5, other columns can be changed to work with different numerics.
-Xtrain=X[1:500,c(5,10, 16)]
+Xtrain=X[1:500,c(5,10,16 )]
 n=dim(Xtrain)[1]
 Xtest=X[501:1000, c(5,10,16)]
 nn=dim(Xtest)[1]
@@ -127,9 +127,9 @@ print(accuracy)
 
 
 ##Membership Classifier: Membership in column 4, other columns can be changed to work with different numerics.
-Xtrain=X[1:500,c(4,8,17)]
+Xtrain=X[1:500,c(4,10,17)]
 n=dim(Xtrain)[1]
-Xtest=X[501:1000, c(4,8,17)]
+Xtest=X[501:1000, c(4,10,17)]
 nn=dim(Xtest)[1]
 k=25
 tM=0
